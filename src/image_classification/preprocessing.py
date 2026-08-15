@@ -1,6 +1,10 @@
 import cv2
 import numpy as np
 from skimage.feature import hog
+from sklearn.preprocessing import StandardScaler
+
+def create_hog_scaler() -> StandardScaler:
+    return StandardScaler()
 
 def extract_hog_features(images):
     features = []
