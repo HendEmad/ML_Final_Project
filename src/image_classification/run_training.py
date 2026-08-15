@@ -26,6 +26,7 @@ from src.image_classification.models import (
     create_vgg16_model
 )
 from src.image_classification.train import (train_ml_model, train_deep_learning_model)
+from tensorflow.keras.applications.vgg16 import preprocess_input
 
 logger = setup_logger(
     logger_name="image_training",
@@ -153,12 +154,16 @@ def main() -> None:
         number_of_classes=NUMBER_OF_CLASSES
     )
 
+    x_train_vgg = preprocess_input(x_train_ml.astype("float32"))
+    x_validation_vgg = preprocess_input(x_validation_ml.astype("float32"))
+    x_test_vgg = preprocess_input(x_test_ml.astype("float32"))
+
     vgg16_model, vgg16_history, vgg16_predictions, vgg16_results = train_deep_learning_model(
         model_name="VGG16",
         model=vgg16_model,
-        x_train=x_train_ml,
+        x_train=x_train_vgg,
         y_train=y_train_ml,
-        x_validation=x_validation_ml,
+        x_validation=x_validation_vgg,
         y_validation=y_validation_ml,
         x_test=x_test_ml,
         y_test=y_test_ml,
@@ -212,5 +217,5 @@ def main() -> None:
     )
     logger.info("Image classification training completed.")
     
-    if __name__ == "__main__":
-        main()
+if __name__ == "__main__":
+    main()

@@ -85,21 +85,45 @@ def create_vgg16_model(
     image_size: int,
     number_of_classes: int
 ) -> tf.keras.Model:
+
     base_model = VGG16(
         weights="imagenet",
         include_top=False,
-        input_shape=(image_size, image_size, 3)
+        input_shape=(
+            image_size,
+            image_size,
+            3
+        )
     )
 
     base_model.trainable = False
+
     model = Sequential([
-        Input(shape=(image_size, image_size, 3)),
-        Lambda(preprocess_input),
+        Input(
+            shape=(
+                image_size,
+                image_size,
+                3
+            )
+        ),
+
         base_model,
+
         GlobalAveragePooling2D(),
-        Dense(128, activation="relu"),
-        Dropout(0.3),
-        Dense(number_of_classes, activation="softmax")
+
+        Dense(
+            128,
+            activation="relu"
+        ),
+
+        Dropout(
+            0.3
+        ),
+
+        Dense(
+            number_of_classes,
+            activation="softmax"
+        )
     ])
 
     return model
